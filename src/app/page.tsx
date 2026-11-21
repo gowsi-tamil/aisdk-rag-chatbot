@@ -68,7 +68,7 @@ export default function Home() {
       }
 
       setUploadedFile(file.name);
-      setUploadStatus(result.message);
+      setUploadStatus(result.message || '');
 
       // Automatically ask AI to summarize the uploaded document.
       await sendMessage({
