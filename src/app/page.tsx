@@ -32,13 +32,9 @@ export default function Home() {
   useEffect(() => {
     if (isLoaded && !isSignedIn && !signInOpened.current) {
       signInOpened.current = true;
-
-      openSignIn({
-        signUpUrl: undefined,
-      });
+      openSignIn({});
     }
   }, [isLoaded, isSignedIn, openSignIn]);
-
   const [input, setInput] = useState('');
   const [isUploading, setIsUploading] = useState(false);
   const [uploadStatus, setUploadStatus] = useState('');
@@ -456,9 +452,13 @@ export default function Home() {
                   rows={1}
                   className="max-h-32 min-h-11 flex-1 resize-y bg-transparent px-3 py-3 text-sm outline-none placeholder:text-slate-400"
                 />
-
                 <button
                   type="submit"
+                  onClick={() => {
+                    if (!isSignedIn) {
+                      openSignIn({});
+                    }
+                  }}
                   disabled={!input.trim() || isChatBusy || isUploading}
                   className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-600 text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-40"
                 >
