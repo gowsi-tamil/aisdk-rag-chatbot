@@ -1,6 +1,7 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
+import { useClerk, useAuth } from '@clerk/nextjs';
 import { useChat } from '@ai-sdk/react';
 import {
   FileText,
@@ -22,6 +23,21 @@ import { Response } from '@/components/ai-elements/response';
 
 export default function Home() {
   const { messages, sendMessage, status, setMessages } = useChat();
+
+  const { isLoaded, isSignedIn } = useAuth();
+  const { openSignIn } = useClerk();
+
+  const signInOpened = useRef(false);
+
+  useEffect(() => {
+    if (isLoaded && !isSignedIn && !signInOpened.current) {
+      signInOpened.current = true;
+
+      openSignIn({
+        signUpUrl: undefined,
+      });
+    }
+  }, [isLoaded, isSignedIn, openSignIn]);
 
   const [input, setInput] = useState('');
   const [isUploading, setIsUploading] = useState(false);
